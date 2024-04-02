@@ -53,3 +53,6 @@ The primary objective of this assignment is to create a system that:
 
 ## Note
 This README provides a general overview. Refer to the code comments for detailed implementation specifics.
+
+## Academic Integrity Warning
+This repository is intended for use as an assignment for a specific course. Any individual using the code in this repository to complete their own assignment without proper citation and authorization may be violating academic integrity policies and may be subject to consequences as outlined by their academic institution.
