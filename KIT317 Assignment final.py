@@ -2,9 +2,6 @@ from sense_emu import SenseHat  # using Sense Emulator
 import time
 import requests as req
 
-temp_thresh = 20
-humidity_thresh = 10
-
 class EnvironmentalSensor:
     def __init__(self):
         self.sense = SenseHat()
@@ -13,6 +10,8 @@ class EnvironmentalSensor:
         self.last_z = self.sense.accel_raw['z']
         self.state = "normal"
         self.in_collision_mode = False
+        self.temp_thresh = 20
+        self.humidity_thresh = 10
 
     def detect_movement(self):
         x = self.sense.accel_raw['x']
@@ -46,16 +45,10 @@ class EnvironmentalSensor:
         self.last_z = z
 
         print("State:", self.state)
-        
+
     def setup(self):
-        global temp_thresh
-        global humidity_thresh
-        
         initial_time = time.time()
         last_activity_time = initial_time
-        
-        s = SenseHat()
-        
         setup = True
         left = False
         right = False
@@ -66,51 +59,48 @@ class EnvironmentalSensor:
                 setup = False
                 print("Exit Setup due to inactivity")
                 return self.run()
-            
-            for event in s.stick.get_events():
+
+            for event in self.sense.stick.get_events():
                 last_activity_time = time.time()
-                
+
                 if setup and event.direction == 'middle' and event.action == 'pressed':
                     setup = False
                     print("Exit Setup")
                     return self.run()
-                    
+
                 if setup:
                     if event.direction == 'left' and event.action == 'pressed':
-                        s.show_message("Temperature")
+                        self.sense.show_message("Temperature")
                         left = True
                         right = False
-                        
+
                     if left:
                         if event.direction == 'up' and event.action == 'pressed':
-                            temp_thresh += 1
-                            print(f"Temp Thresh:{temp_thresh}")
-                            s.show_message(str(temp_thresh))
-                            
+                            self.temp_thresh += 1
+                            print(f"Temp Thresh:{self.temp_thresh}")
+                            self.sense.show_message(str(self.temp_thresh))
+
                         elif event.direction == 'down' and event.action == 'pressed':
-                            temp_thresh -= 1
-                            print(f"Temp Thresh:{temp_thresh}")
-                            s.show_message(str(temp_thresh))
-                            
+                            self.temp_thresh -= 1
+                            print(f"Temp Thresh:{self.temp_thresh}")
+                            self.sense.show_message(str(self.temp_thresh))
+
                     if event.direction == 'right' and event.action == 'pressed':
-                        s.show_message("Humidity")
+                        self.sense.show_message("Humidity")
                         right = True
                         left = False
                     if right:
                         if event.direction == 'up' and event.action == 'pressed':
-                            humidity_thresh += 1
-                            print(f"Humidity Thresh:{humidity_thresh}")
-                            s.show_message(str(humidity_thresh))
-                            
+                            self.humidity_thresh += 1
+                            print(f"Humidity Thresh:{self.humidity_thresh}")
+                            self.sense.show_message(str(self.humidity_thresh))
+
                         elif event.direction == 'down' and event.action == 'pressed':
-                            humidity_thresh -= 1
-                            print(f"Humidity Thresh:{humidity_thresh}")
-                            s.show_message(str(humidity_thresh))
-        
-    
+                            self.humidity_thresh -= 1
+                            print(f"Humidity Thresh:{self.humidity_thresh}")
+                            self.sense.show_message(str(self.humidity_thresh))
+
     def report_state(self):
-        global temp_thresh
-        global humidity_thresh
         print("State reported to server:", self.state)
         server = 'http://iotserver.com/webserver.php'
         s = SenseHat()
@@ -119,7 +109,7 @@ class EnvironmentalSensor:
         temp = s.get_temperature()
         humidity = s.get_humidity()
         payload = {'temperature': temp, 'humidity': humidity, 'condition': self.state, 'timestamp': t_time,
-                   'temp_thresh': temp_thresh, 'humidity_thresh': humidity_thresh}
+                   'temp_thresh': self.temp_thresh, 'humidity_thresh': self.humidity_thresh}
         r = req.get(server, params=payload)
         if r.text == '0':
             print("Error adding data to the server")
@@ -131,16 +121,14 @@ class EnvironmentalSensor:
 
     def show_collision_message(self):
         if self.in_collision_mode:
-            self.sense.show_message("Collision Detected!", text_colour=(255, 0, 0),scroll_speed=0.070)
-            #self.handle_middle_button_press()
-    
-    
+            self.sense.show_message("Collision Detected!", text_colour=(255, 0, 0), scroll_speed=0.070)
+
     def clear_collision_message(self):
         self.in_collision_mode = False
         self.state = "normal"
         print("Collision message cleared.")
         self.sense.clear()
-        return  # Reset to initial state
+        return  
 
     def handle_middle_button_press(self):
         last_upload_time = time.time()
@@ -152,7 +140,7 @@ class EnvironmentalSensor:
             for event in self.sense.stick.get_events():
                 if event.action == "pressed" and event.direction == "middle":
                     self.clear_collision_message()
-                    return self.run
+                    return self.run()
 
     def run(self):
         last_upload_time = time.time()
