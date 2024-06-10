@@ -68,6 +68,7 @@ This project involves creating an IoT device that uses the Sense HAT emulator to
 
 ## System Diagram
 Below is a system diagram showing how the IoT device communicates with the webserver.
+
 ![State transistion diagram](./assets/state_diagram.png)
 
 ## Contributing
