@@ -67,7 +67,8 @@ This project involves creating an IoT device that uses the Sense HAT emulator to
 - **`displaywebserver.php`**: The PHP script for displaying the logged data.
 
 ## System Diagram
-[State transistion diagram](./assets/State%20Diagram.pdf)
+Below is a system diagram showing how the IoT device communicates with the webserver.
+![State transistion diagram](./assets/state_diagram.png)
 
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue to discuss any changes or enhancements.
