@@ -1,5 +1,7 @@
 # IoT Environmental Sensor and Webserver
 
+![IoT Environmental Sensor and Webserver Logo](assets/sylvan_eye.png)
+
 This project is a prototype for a sensor device designed to assist forestry workers in monitoring the growing conditions of trees. The device, emulated using the Sense HAT, collects environmental data and communicates with a webserver to log and display the data. The webserver, implemented in PHP, logs the data received from the sensor and provides a user interface to view the log.
 
 ## Table of Contents
