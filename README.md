@@ -14,7 +14,6 @@ This project is a prototype for a sensor device designed to assist forestry work
   - [Webserver](#webserver-usage)
 - [Files](#files)
 - [System Diagram](#system-diagram)
-- [Demonstration Video](#demonstration-video)
 - [Contributing](#contributing)
 - [License](#license)
 
