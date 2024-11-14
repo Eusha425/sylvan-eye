@@ -41,8 +41,8 @@ This project involves creating an IoT device that uses the Sense HAT emulator to
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/Eusha425/iot-environmental-sensor.git
-   cd iot-environmental-sensor
+   git clone https://github.com/Eusha425/sylvan-eye.git
+   cd sylvan-eye
 2. **Install Dependencies**
 - For the IoT device (Python):
   ```bash
